@@ -1,0 +1,693 @@
+html {
+  font-size: 14px;
+}
+
+body {
+  /* Prevent the user selecting text in the example */
+  user-select: none;
+  background-color: linen;
+  padding: 5px;
+}
+
+.view {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+.container-general {
+  display: flex;
+}
+
+.container-sprint-overview {
+  display: flex;
+  border: 3px solid red;
+}
+
+.overview {
+  font-weight: bold;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.left {
+  float:left;
+  margin-left: 5px;
+}
+
+.center {
+  text-align:center;
+}
+
+.right {
+  float:right;
+  margin-right: 5px;
+}
+
+.heading {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.settings {
+  font-size: x-large;
+  margin-left: 5px;
+}
+
+.settings-box {
+  height: 275px;
+  border: 3px solid forestgreen;
+}
+
+.flex-grid {
+  flex: 1;
+}
+
+.flex-grid-4 {
+  flex: 4;
+}
+
+.sprint-box {
+  min-height: 700px;
+  height: auto;
+  border: 1px solid black;
+}
+
+.sprint-full {
+  min-height: 700px;
+  height: auto;
+  border: 1px solid black;
+  /*background-color: darkgrey;*/
+}
+
+.sprint-stories {
+  min-height: 150px;
+  height: auto;
+  padding: 5px;
+}
+
+.sprint-tests {
+  min-height: 150px;
+  height: auto;
+  padding: 5px;
+}
+
+.sprint-bugs {
+  min-height: 150px;
+  height: auto;
+  padding: 5px;
+}
+
+.sprint-debts {
+  min-height: 150px;
+  height: auto;
+  padding: 5px;
+}
+
+.sprint-supports {
+  min-height: 150px;
+  height: auto;
+  padding: 5px;
+}
+
+.sprint-pip-plus {
+  min-height: 100px;
+  height: auto;
+  padding: 5px;
+}
+
+.category {
+  margin: 0 auto;
+  width: 150px;
+  font-weight: bold;
+}
+
+.catchange {
+  margin: 0 auto;
+  width: 150px;
+  font-weight: bold;
+}
+
+.status {
+  margin: 0 auto;
+  width: 150px;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+.Open {
+  background-color: lightskyblue;
+}
+
+.Reopened {
+  background-color: lightskyblue;
+}
+
+.New {
+  background-color: coral;
+}
+
+.Estimate {
+  background-color: lightcoral;
+}
+
+.Resolved {
+  background-color: lightgreen;
+}
+
+.Closed {
+  background-color: lightgreen;
+}
+
+.Progress {
+  background-color: #ffd769;
+}
+
+.label-bolder {
+  font-weight: bolder;
+}
+
+.pre-pct-label {
+  display: inline-block;
+  float: left;
+  clear: left;
+  text-align: right;
+  width: 120px;
+  margin-top: 2px;
+  margin-right: 2px;
+}
+
+.post-pct-label {
+  display: inline-block;
+  float: left;
+  text-align: left;
+  margin-top: 2px;
+}
+
+.pre-capa-label {
+  display: inline-block;
+  float: left;
+  clear: left;
+  text-align: right;
+  width: 185px;
+  margin-top: 2px;
+  margin-right: 5px;
+}
+
+.post-capa-label {
+  display: inline-block;
+  float: left;
+  text-align: left;
+  margin-top: 2px;
+  margin-left: 2px;
+}
+
+.pre-tst-capa-label {
+  display: inline-block;
+  float: left;
+  clear: left;
+  text-align: right;
+  width: 185px;
+  margin-top: 2px;
+  margin-right: 5px;
+}
+
+.post-tst-capa-label {
+  display: inline-block;
+  float: left;
+  text-align: left;
+  margin-top: 2px;
+  margin-left: 2px;
+}
+
+.progress {
+  width: 100%;
+  border: 1px solid black;
+}
+
+.status-box {
+  display: inline-block;
+  padding: 1px 3px;
+  border-radius: 4px;
+  margin-top: 2px;
+  margin-left: 2px;
+  border: 1px solid black;
+}
+
+input[type=checkbox] {
+  display: inline-block;
+  float: left;
+  margin-top: 5px;
+  margin-left: 4px;
+}
+
+input {
+  display: inline-block;
+  float: left;
+  width: 43px;
+  text-align: center;
+  padding: 0px;
+  line-height: 20px;
+  }
+
+.index-table {
+  width: 100%;
+}
+
+.index-table th, td {
+  text-align: center;
+}
+
+.sprint-table {
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin: auto;
+}
+
+.sprint-table th {
+  border-bottom: 1px solid black;
+}
+
+.avail {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.spacing {
+  background-color: linen;
+}
+
+.pct {
+  border-top: 1px solid black;
+}
+
+.title {
+  text-align: right;
+  border-right: 1px solid black;
+}
+
+.sum {
+  background-color: #70ff00;
+  text-align: center;
+  color: black;
+  font-weight: bold;
+}
+
+.story {
+  text-align: center;
+  color: white;
+  font-weight: bold;
+}
+
+.story-color {
+  background-color: #27478A;
+}
+
+.support {
+  text-align: center;
+  color: black;
+  font-weight: bold;
+}
+
+.support-color {
+  background-color: #FF8800;
+}
+
+.debt {
+  text-align: center;
+  color: white;
+  font-weight: bold;
+}
+
+.debt-color {
+  background-color: #FF86FF;
+}
+
+.bug {
+  text-align: center;
+  color: white;
+  font-weight: bold;
+}
+
+.bug-color {
+  background-color: #FF4040;
+}
+
+.test {
+  text-align: center;
+  color: white;
+  font-weight: bold;
+}
+
+.test-color {
+  background-color: #305030;
+}
+
+.movedto {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+}
+
+.pip {
+  text-align: center;
+  color: #850000;
+  font-weight: bold;
+}
+
+.pip-color {
+  background-color: #DDDD00;
+}
+
+.sprint_cap, .sprint_load, .sprint_plan, .sprint_fin {
+  color: black;
+}
+
+.sprint_cap_w, .sprint_load_w, .sprint_plan_w, .sprint_fin_w {
+  color: white;
+}
+
+.sprint_cap_r, .sprint_load_r, .sprint_plan_r, .sprint_fin_r {
+  color: #850000;
+}
+
+.epic-box {
+  border: 3px solid #000;
+  background-color: #ddd;
+  border-radius: .5em;
+  padding: 5px;
+  margin: 5px;
+}
+
+.epic-color0 {
+  background-color: #0b7a85;
+  color: white;
+}
+
+.epic-color1 {
+  background-color: #99c35f;
+  color: black;
+}
+
+.epic-color2 {
+  background-color: #aa556f;
+  color: white;
+}
+
+.epic-color3 {
+  background-color: #e7b6c5;
+  color: black;
+}
+
+.epic-color4 {
+  background-color: #84ffea;
+  color: black;
+}
+
+.epic-color5 {
+  background-color: #567243;
+  color: white;
+}
+
+.epic-color6 {
+  background-color: #a7a29a;
+  color: black;
+}
+
+.epic-color7 {
+  background-color: #7472cf;
+  color: white;
+}
+
+.epic-color8 {
+  background-color: #5c7e96;
+  color: white;
+}
+
+.epic-color9 {
+  background-color: #a981c1;
+  color: black;
+}
+
+.epic-color10 {
+  background-color: #c19481;
+  color: black;
+}
+
+.epic-color11 {
+  background-color: #7294cf;
+  color: black;
+}
+
+.epic-color12 {
+  background-color: #b0b78a;
+  color: black;
+}
+
+.epic-color13 {
+  background-color: #b78d8a;
+  color: black;
+}
+
+.epic-color14 {
+  background-color: #7472cf;
+  color: black;
+}
+
+.epic-color15 {
+  background-color: #757575;
+  color: white;
+}
+
+.epic-color16 {
+  background-color: #4d2c29;
+  color: white;
+}
+
+.epic-color17 {
+  background-color: #b55236;
+  color: white;
+}
+
+.epic-color18 {
+  background-color: #804b2d;
+  color: white;
+}
+
+.epic-color19 {
+  background-color: #59320a;
+  color: white;
+}
+
+.epic-color20 {
+  background-color: #f5c162;
+  color: black;
+}
+
+.epic-color21 {
+  background-color: #9c8008;
+  color: white;
+}
+
+.epic-color22 {
+  background-color: #f2ed55;
+  color: black;
+}
+
+.epic-color23 {
+  background-color: #6a7326;
+  color: white;
+}
+
+.epic-color24 {
+  background-color: #719e08;
+  color: black;
+}
+
+.epic-color25 {
+  background-color: #8ddb51;
+  color: black;
+}
+
+.epic-color26 {
+  background-color: #1b5e14;
+  color: white;
+}
+
+.epic-color27 {
+  background-color: #113829;
+  color: white;
+}
+
+.epic-color28 {
+  background-color: #7858b0;
+  color: black;
+}
+
+.epic-color29 {
+  background-color: #110657;
+  color: white;
+}
+
+.epic-color30 {
+  background-color: #400657;
+  color: white;
+}
+
+.epic-color31 {
+  background-color: #b08f99;
+  color: black;
+}
+
+.epic-color32 {
+  background-color: #142329;
+  color: white;
+}
+
+.progressbar-color {
+  background-color: darkorange;
+}
+
+.ticket-box {
+  border: 3px solid #666;
+  background-color: #eee;
+  border-radius: .5em;
+  cursor: move;
+  padding: 5px;
+  margin: 5px;
+}
+
+.stories-box {
+  border: 3px solid #666;
+  background-color: #8ab0ff;
+  border-radius: .5em;
+  cursor: move;
+  padding: 5px;
+  margin: 5px;
+}
+
+.tests-box {
+  border: 3px solid #666;
+  background-color: #a1f7a1;
+  border-radius: .5em;
+  cursor: move;
+  padding: 5px;
+  margin: 5px;
+}
+
+.debts-box {
+  border: 3px solid #666;
+  background-color: #ffc0ff;
+  border-radius: .5em;
+  cursor: move;
+  padding: 5px;
+  margin: 5px;
+}
+
+.problems-box {
+  border: 3px solid #666;
+  background-color: #fa9696;
+  border-radius: .5em;
+  cursor: move;
+  padding: 5px;
+  margin: 5px;
+}
+
+.supports-box {
+  border: 3px solid #666;
+  background-color: #a08070;
+  border-radius: .5em;
+  cursor: move;
+  padding: 5px;
+  margin: 5px;
+}
+
+.moved-ticket-box {
+  border: 3px solid #666;
+  background-color: #aaa;
+  border-radius: .5em;
+  cursor: move;
+  padding: 5px;
+  margin: 5px;
+}
+
+.pipplus-box {
+  border: 3px solid #666;
+  background-color: #dda;
+  border-radius: .5em;
+  cursor: move;
+  padding: 5px;
+  margin: 5px;
+}
+
+.points {
+  display: inline;
+}
+
+.margin-left-10 {
+  margin-left: 10px;
+}
+
+.margin-left-20 {
+  margin-left: 20px;
+}
+
+.margin-left-30 {
+  margin-left: 30px;
+}
+
+.margin-left-50 {
+  margin-left: 50px;
+}
+
+.margin-bottom-2 {
+  margin-bottom: 2px;
+}
+
+.margin-bottom-10 {
+  margin-bottom: 10px;
+}
+
+.margin-top-2 {
+  margin-top: 2px;
+}
+
+.margin-top-5 {
+  margin-top: 5px;
+}
+
+.margin-top-10 {
+  margin-top: 10px;
+}
+
+.over {
+  background-color: #666666;
+}
+
+.overbox {
+  background-color: #666666;
+}
+
+.dragging {
+  opacity: .5;
+}
+
+.custom-btn {
+  width: 110px;
+}
+
+.progress-btn {
+  width: 100%;
+}
+
+.custom-vert-margin-sm {
+  margin-top: 5px;
+}
+
+.custom-vert-margin-md {
+  margin-top: 10px;
+}

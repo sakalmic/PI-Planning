@@ -1,0 +1,1 @@
+{"team": "AG", "year": "2023", "pi": "PI1", "stories": "65", "problems": "15", "debts": "15", "supports": "5", "pipplus": "1", "foursprints": "false",  "sprints":{ "sprint1": {"capacity": "24.5", "test": "5"}, "sprint2": {"capacity": "16", "test": "4.5"}, "sprint3": {"capacity": "19.25", "test": "9"}, "sprint4": {"capacity": "", "test": ""}}}

@@ -1,0 +1,6 @@
+Comparison - planned vs. actual
+More slots:
+- TST
+- Support for SQT
+slots with scroll bar
+Check for all sprints and store sprint-ids

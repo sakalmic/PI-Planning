@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="text-center">{% block title %} Welcome to the PI-Planning helper {% endblock %}</h1>
+
+<div class="row">
+    <div class="col-xl-5 col-lg-5 col-md-5">
+    </div>
+    <div class="col-xl-2 col-lg-2 col-md-2">
+        <div class="center custom-vert-margin-md" id="jirablock">
+        </div>
+    </div>
+</div>
+
+<div class="row custom-vert-margin-md">
+    <div class="col-xl-5 col-lg-5 col-md-5">
+    </div>
+    <div class="col-xl-2 col-lg-2 col-md-2 center">
+        <button class="btn btn-success custom-btn" id="checkbutton" onclick="">Check again</button>
+    </div>
+</div>
+
+<div class="row custom-vert-margin-md">
+    <div class="col-xl-5 col-lg-5 col-md-5">
+    </div>
+    <div class="col-xl-2 col-lg-2 col-md-2 text-center">
+        <div id="logoutblock">
+            <form action="/logout">
+                <button class="btn btn-danger custom-btn" id="logoutbutton" type="submit">Change Credentials</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-4 col-lg-4 col-md-4">
+    </div>
+    <div class="col-xl-4 col-lg-4 col-md-4">
+        <div id="pipblock">
+            <table class="index-table">
+                <tr>
+                    <th>Next PI-Planning</th>
+                    <th>Status of current PI</th>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="nextpip">
+                        </div>
+                    </td>
+                    <td>
+                        <div id="currentpi">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row custom-vert-margin-md">
+    <div class="col-xl-5 col-lg-5 col-md-5">
+    </div>
+    <div class="col-xl-2 col-lg-2 col-md-2 text-center">
+        <div id="archiveblock">
+            <form action="/archive">
+                <button class="btn btn-dark custom-btn" id="archivebutton" type="submit">Archive</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function jiraImage(color, caption, alt) {
+        let htmldata = "<figure class='figure'>" +
+                "<img class='figure-img img-fluid' src='static/images/jira-logo-" + color + ".png'" +
+                "alt='JIRA Logo " + alt + "'/>" +
+                "<figcaption class='figure-caption text-center'>" + caption + "</figcaption></figure>";
+
+        $("#jirablock").html(htmldata);
+    }
+
+    function checkConnection() {
+        $.ajax({
+            url:"{{url_for('checkjira')}}",
+            type:"GET",
+            success:function(res) {
+                if (res == "OK") {
+                    color = "green";
+                    caption = "Connection established"
+                    alt = "(established)"
+
+                    $("#logoutblock").css("visibility", "hidden");
+                    $("#pipblock").css("visibility", "visible");
+                    $("#archiveblock").css("visibility", "visible");
+                } else {
+                    color = "red";
+                    caption = "Connection refused"
+                    alt = "(rejected)"
+
+                    $("#logoutblock").css("visibility", "visible");
+                    $("#pipblock").css("visibility", "hidden");
+                    $("#archiveblock").css("visibility", "hidden");
+                }
+
+                $("#jirablock").html(jiraImage(color, caption, alt));
+            }
+        });
+    }
+
+    function getNextPipLinks() {
+        const d = new Date();
+        const month = d.getMonth() + 2;
+        let pi = Math.ceil(month/4) + 1;
+        let year;
+
+        if (pi > 4) {
+            year = d.getFullYear() + 1;
+            pi = 1;
+        } else {
+            year = d.getFullYear()
+        }
+
+        const piname = "PI-" + year + "-0" + pi;
+
+        $("#nextpip").html("<div id='AG_PIP'>" +
+            "<a href='/pip?team=AG&year=" + year + "&pi=" + pi + "'>[AG] Planning: " + piname + "-AG</a>" +
+            "</div>" +
+            "<div id='AU_PIP'>" +
+            "<a href='/pip?team=AU&year=" + year + "&pi=" + pi + "'>[AU] Planning: " + piname + "-AU</a>" +
+            "</div>" +
+            "<div id='GG_PIP'>" +
+            "<a href='/pip?team=GG&year=" + year + "&pi=" + pi + "'>[GG] Planning: " + piname + "-GG</a>" +
+            "</div>" +
+            "<div id='UI_PIP'>" +
+            "<a href='/pip?team=UI&year=" + year + "&pi=" + pi + "'>[UI] Planning: " + piname + "-UI</a>" +
+            "</div>" +
+            "<div id='ST_PIP'>" +
+            "<a href='/pip?team=ST&year=" + year + "&pi=" + pi + "'>[ST] Planning: " + piname + "-ST</a>" +
+            "</div>");
+    }
+
+    function getCurrentPiLinks() {
+        const d = new Date();
+        const month = d.getMonth() + 2;
+        let pi = Math.ceil(month/4);
+        let year;
+
+        if (pi == 0) {
+            year = d.getFullYear() - 1;
+            pi = 4;
+        } else {
+            year = d.getFullYear()
+        }
+
+        const piname = "PI-" + year + "-0" + pi;
+
+        $.ajax({
+            url:  "{{url_for('checkPlan')}}",
+            data: {pi: piname},
+            success:function(res)
+            {
+                let html = "";
+                res.forEach(element => {
+                    const filename = element.split(".");
+                    const piname = filename[0].split("-");
+                    const team = piname[3];
+                    const year = piname[1];
+                    const pi = piname[2];
+                    html += "<div id='" + team + "_STAT'><a href='/stat?team=" + team + "&year=" + year + "&pi=" + pi + "'>" +
+                        "[" + team + "] " + filename[0] + "</a></div>";
+                });
+
+                $("#currentpi").html(html);
+            }
+        });
+    }
+
+    function init() {
+        let color = "grey";
+        let caption = "Loading...";
+        let alt = "(checking)"
+
+        jiraImage(color, caption, alt);
+        getNextPipLinks()
+        getCurrentPiLinks();
+
+        $("#logoutblock").css("visibility", "hidden");
+        $("#pipblock").css("visibility", "hidden");
+        $("#archiveblock").css("visibility", "hidden");
+
+        checkConnection();
+    }
+
+    $(document).ready(function(){
+        init();
+    });
+
+    $('#checkbutton').click(function() {
+        init();
+    });
+</script>
+{% endblock %}

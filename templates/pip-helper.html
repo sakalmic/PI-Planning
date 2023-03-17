@@ -1,0 +1,1417 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-5 col-lg-5 col-md-5">
+        <form action="/index">
+            <button class="btn btn-secondary custom-btn left" id="backbutton" type="submit"><- Back</button>
+        </form>
+    </div>
+    <div class="col-xl-2 col-lg-2 col-md-2 center" id="header">
+    </div>
+    <div class="col-xl-5 col-lg-5 col-md-5">
+        <button class="btn btn-primary custom-btn right" id="saveplanbutton" type="submit">Save</button>
+    </div>
+</div>
+
+<div class="settings-box margin-bottom-10">
+    <div class="row">
+        <div class="col-xl-2 col-lg-2 col-md-2">
+            <div class="flex-grid settings label-bolder left">
+                Capa, Slots & Plan
+            </div>
+        </div>
+        <div class="col-xl-10 col-lg-10 col-md-10">
+            <div class="flex-grid left custom-vert-margin-md">
+                <div class="inline"><label class="pre-pct-label" for="stories">Stories: </label><input type="text" id="stories" value="65"><label class="post-pct-label inline" for="stories"> %</label></div>
+                <div class="inline"><label class="pre-pct-label" for="debts">Tech. Debts: </label><input type="text" id="debts" value="15"><label class="post-pct-label" for="debts"> %</label></div>
+                <div class="inline"><label class="pre-pct-label" for="problems">Problem Reports: </label><input type="text" id="problems" value="15"><label class="post-pct-label" for="problems"> %</label></div>
+                <div class="inline"><label class="pre-pct-label" for="supports">Support: </label><input type="text" id="supports" value="5"><label class="post-pct-label" for="supports"> %</label></div>
+                <div class="inline"><label class="pre-pct-label" for="pipplus">PIP buffer: </label><input type="text" id="pipplus" value="0"><label class="post-pct-label" for="pipplus"> Pts.</label></div>
+                <div class="inline"><label class="pre-pct-label" for="sprints">No. of Sprints: 4</label><input type="checkbox" id="sprints"></div>
+            </div>
+            <!--<div class="flex-grid left custom-vert-margin-sm margin-left-50">
+                <div class="inline"><button id="toggle-btn" class="btn btn-success custom-btn position-relative top-0">Toggle View</button></div>
+            </div>-->
+        </div>
+    </div>
+    <div class="container-general row">
+        <div class="flex-grid margin-left-10">
+            <div class="inline left margin-top-2"><label class="pre-capa-label" for="picapa">Capacity of PI: DEV </label><input type="text" id="picapa" value="0" readonly><label for="picapa"> Pts.</label>
+                <label class="pre-tst-capa-label" for="pitstcapa">TST </label><input type="text" id="pitstcapa" value="0" readonly><label class="post-tst-capa-label" for="pitstcapa"> Pts.</label>
+            </div>
+            <table class="sprint-table">
+                <tr>
+                    <th class="title"></th>
+                    <th class="sum">SUM</th>
+                    <th class="story story-color">SRY</th>
+                    <th class="test test-color">TST</th>
+                    <th class="debt debt-color">DEB</th>
+                    <th class="bug bug-color">BUG</th>
+                    <th class="support support-color">SUP</th>
+                    <th class="pip pip-color">PIP+</th>
+                </tr>
+                <tr>
+                    <td class="title">Capa</td>
+                    <td class="sum"><div id="pi_sum_cap">0</div></td>
+                    <td class="story story-color"><div id="pi_stories_cap">0</div></td>
+                    <td class="test test-color"><div id="pi_tests_cap">0</div></td>
+                    <td class="debt debt-color"><div id="pi_debts_cap">0</div></td>
+                    <td class="bug bug-color"><div id="pi_bugs_cap">0</div></td>
+                    <td class="support support-color"><div id="pi_supports_cap">0</div></td>
+                    <td class="pip pip-color"><div id="pi_pipplus_cap">0</div></td>
+                </tr>
+                <tr>
+                    <td class="title">Load</td>
+                    <td class="sum"><div id="pi_sum_load">0</div></td>
+                    <td class="story story-color"><div id="pi_stories_load">0</div></td>
+                    <td class="test test-color"><div id="pi_tests_load">0</div></td>
+                    <td class="debt debt-color"><div id="pi_debts_load">0</div></td>
+                    <td class="bug bug-color"><div id="pi_bugs_load">0</div></td>
+                    <td class="support support-color"><div id="pi_supports_load">0</div></td>
+                    <td class="pip pip-color"><div id="pi_pipplus_load">0</div></td>
+                </tr>
+                <tr class="avail">
+                    <td class="title">Avail</td>
+                    <td class="sum"><div id="pi_sum_avail">0</div></td>
+                    <td class="story story-color"><div id="pi_stories_avail">0</div></td>
+                    <td class="test test-color"><div id="pi_tests_avail">0</div></td>
+                    <td class="debt debt-color"><div id="pi_debts_avail">0</div></td>
+                    <td class="bug bug-color"><div id="pi_bugs_avail">0</div></td>
+                    <td class="support support-color"><div id="pi_supports_avail">0</div></td>
+                    <td class="pip pip-color"><div id="pi_pipplus_avail">0</div></td>
+                </tr>
+                <tr>
+                    <td class="spacing"></td>
+                </tr>
+                <tr class="pct">
+                    <td class="title">% Slot</td>
+                    <td></td>
+                    <td class="story story-color"><div id="pi_stories_pct_slot">0%</div></td>
+                    <td class="test test-color"><div id="pi_tests_pct_slot">0%</div></td>
+                    <td class="debt debt-color"><div id="pi_debts_pct_slot">0%</div></td>
+                    <td class="bug bug-color"><div id="pi_bugs_pct_slot">0%</div></td>
+                    <td class="support support-color"><div id="pi_supports_pct_slot">0%</div></td>
+                    <td class="pip pip-color"><div id="pi_pipplus_pct_slot">100%</div></td>
+                </tr>
+                <tr>
+                    <td class="title">% Load</td>
+                    <td></td>
+                    <td class="story story-color"><div id="pi_stories_pct_load">0%</div></td>
+                    <td class="test test-color"><div id="pi_tests_pct_load">0%</div></td>
+                    <td class="debt debt-color"><div id="pi_debts_pct_load">0%</div></td>
+                    <td class="bug bug-color"><div id="pi_bugs_pct_load">0%</div></td>
+                    <td class="support support-color"><div id="pi_supports_pct_load">0%</div></td>
+                    <td class="pip pip-color"><div id="pi_pipplus_pct_load">0%</div></td>
+                </tr>
+            </table>
+        </div>
+        <div class="flex-grid margin-left-10">
+            <div class="inline margin-top-2"><label class="pre-capa-label" for="sprint1capa">Capacity of Sprint 1: DEV </label><input type="text" id="sprint1capa" value="0"><label class="post-capa-label" for="sprint1capa"> Pts.</label>
+                <label class="pre-tst-capa-label" for="sprint1tstcapa">TST </label><input type="text" id="sprint1tstcapa" value="0"><label class="post-tst-capa-label" for="sprint1tstcapa"> Pts.</label>
+            </div>
+            <table class="sprint-table">
+                <tr>
+                    <th class="title"></th>
+                    <th class="sum">SUM</th>
+                    <th class="story story-color">SRY</th>
+                    <th class="test test-color">TST</th>
+                    <th class="debt debt-color">DEB</th>
+                    <th class="bug bug-color">BUG</th>
+                    <th class="support support-color">SUP</th>
+                    <th class="pip pip-color">PIP+</th>
+                </tr>
+                <tr>
+                    <td class="title">Capa</td>
+                    <td class="sum"><div id="sprint1_sum_cap">0</div></td>
+                    <td class="story story-color"><div id="sprint1_stories_cap">0</div></td>
+                    <td class="test test-color"><div id="sprint1_tests_cap">0</div></td>
+                    <td class="debt debt-color"><div id="sprint1_debts_cap">0</div></td>
+                    <td class="bug bug-color"><div id="sprint1_bugs_cap">0</div></td>
+                    <td class="support support-color"><div id="sprint1_supports_cap">0</div></td>
+                    <td class="pip pip-color"><div id="sprint1_pipplus_cap">0</div></td>
+                </tr>
+                <tr>
+                    <td class="title">Load</td>
+                    <td class="sum"><div id="sprint1_sum_load">0</div></td>
+                    <td class="story story-color"><div id="sprint1_stories_load">0</div></td>
+                    <td class="test test-color"><div id="sprint1_tests_load">0</div></td>
+                    <td class="debt debt-color"><div id="sprint1_debts_load">0</div></td>
+                    <td class="bug bug-color"><div id="sprint1_bugs_load">0</div></td>
+                    <td class="support support-color"><div id="sprint1_supports_load">0</div></td>
+                    <td class="pip pip-color"><div id="sprint1_pipplus_load">0</div></td>
+                </tr>
+                <tr class="avail">
+                    <td class="title">Avail</td>
+                    <td class="sum"><div id="sprint1_sum_avail">0</div></td>
+                    <td class="story story-color"><div id="sprint1_stories_avail">0</div></td>
+                    <td class="test test-color"><div id="sprint1_tests_avail">0</div></td>
+                    <td class="debt debt-color"><div id="sprint1_debts_avail">0</div></td>
+                    <td class="bug bug-color"><div id="sprint1_bugs_avail">0</div></td>
+                    <td class="support support-color"><div id="sprint1_supports_avail">0</div></td>
+                    <td class="pip pip-color"><div id="sprint1_pipplus_avail">0</div></td>
+                </tr>
+                <tr>
+                    <td class="spacing"></td>
+                </tr>
+                <tr class="pct">
+                    <td class="title">% Slot</td>
+                    <td></td>
+                    <td class="story story-color"><div id="sprint1_stories_pct_slot">0%</div></td>
+                    <td class="test test-color"><div id="sprint1_tests_pct_slot">0%</div></td>
+                    <td class="debt debt-color"><div id="sprint1_debts_pct_slot">0%</div></td>
+                    <td class="bug bug-color"><div id="sprint1_bugs_pct_slot">0%</div></td>
+                    <td class="support support-color"><div id="sprint1_supports_pct_slot">0%</div></td>
+                    <td class="pip pip-color"><div id="sprint1_pipplus_pct_slot">100%</div></td>
+                </tr>
+                <tr>
+                    <td class="title">% Load</td>
+                    <td></td>
+                    <td class="story story-color"><div id="sprint1_stories_pct_load">0%</div></td>
+                    <td class="test test-color"><div id="sprint1_tests_pct_load">0%</div></td>
+                    <td class="debt debt-color"><div id="sprint1_debts_pct_load">0%</div></td>
+                    <td class="bug bug-color"><div id="sprint1_bugs_pct_load">0%</div></td>
+                    <td class="support support-color"><div id="sprint1_supports_pct_load">0%</div></td>
+                    <td class="pip pip-color"><div id="sprint1_pipplus_pct_load">0%</div></td>
+                </tr>
+            </table>
+        </div>
+        <div class="flex-grid margin-left-10">
+            <div class="inline margin-top-2"><label class="pre-capa-label" for="sprint2capa">Capacity of Sprint 2: DEV </label><input type="text" id="sprint2capa" value="0"><label class="post-capa-label" for="sprint2capa"> Pts.</label>
+                <label class="pre-tst-capa-label" for="sprint2tstcapa">TST </label><input type="text" id="sprint2tstcapa" value="0"><label class="post-tst-capa-label" for="sprint2tstcapa"> Pts.</label>
+            </div>
+            <table class="sprint-table">
+                <tr>
+                    <th class="title"></th>
+                    <th class="sum">SUM</th>
+                    <th class="story story-color">SRY</th>
+                    <th class="test test-color">TST</th>
+                    <th class="debt debt-color">DEB</th>
+                    <th class="bug bug-color">BUG</th>
+                    <th class="support support-color">SUP</th>
+                    <th class="pip pip-color">PIP+</th>
+                </tr>
+                <tr>
+                    <td class="title">Capa</td>
+                    <td class="sum"><div id="sprint2_sum_cap">0</div></td>
+                    <td class="story story-color"><div id="sprint2_stories_cap">0</div></td>
+                    <td class="test test-color"><div id="sprint2_tests_cap">0</div></td>
+                    <td class="debt debt-color"><div id="sprint2_debts_cap">0</div></td>
+                    <td class="bug bug-color"><div id="sprint2_bugs_cap">0</div></td>
+                    <td class="support support-color"><div id="sprint2_supports_cap">0</div></td>
+                    <td class="pip pip-color"><div id="sprint2_pipplus_cap">0</div></td>
+                </tr>
+                <tr>
+                    <td class="title">Load</td>
+                    <td class="sum"><div id="sprint2_sum_load">0</div></td>
+                    <td class="story story-color"><div id="sprint2_stories_load">0</div></td>
+                    <td class="test test-color"><div id="sprint2_tests_load">0</div></td>
+                    <td class="debt debt-color"><div id="sprint2_debts_load">0</div></td>
+                    <td class="bug bug-color"><div id="sprint2_bugs_load">0</div></td>
+                    <td class="support support-color"><div id="sprint2_supports_load">0</div></td>
+                    <td class="pip pip-color"><div id="sprint2_pipplus_load">0</div></td>
+                </tr>
+                <tr class="avail">
+                    <td class="title">Avail</td>
+                    <td class="sum"><div id="sprint2_sum_avail">0</div></td>
+                    <td class="story story-color"><div id="sprint2_stories_avail">0</div></td>
+                    <td class="test test-color"><div id="sprint2_tests_avail">0</div></td>
+                    <td class="debt debt-color"><div id="sprint2_debts_avail">0</div></td>
+                    <td class="bug bug-color"><div id="sprint2_bugs_avail">0</div></td>
+                    <td class="support support-color"><div id="sprint2_supports_avail">0</div></td>
+                    <td class="pip pip-color"><div id="sprint2_pipplus_avail">0</div></td>
+                </tr>
+                <tr>
+                    <td class="spacing"></td>
+                </tr>
+                <tr class="pct">
+                    <td class="title">% Slot</td>
+                    <td></td>
+                    <td class="story story-color"><div id="sprint2_stories_pct_slot">0%</div></td>
+                    <td class="test test-color"><div id="sprint2_tests_pct_slot">0%</div></td>
+                    <td class="debt debt-color"><div id="sprint2_debts_pct_slot">0%</div></td>
+                    <td class="bug bug-color"><div id="sprint2_bugs_pct_slot">0%</div></td>
+                    <td class="support support-color"><div id="sprint2_supports_pct_slot">0%</div></td>
+                    <td class="pip pip-color"><div id="sprint2_pipplus_pct_slot">100%</div></td>
+                </tr>
+                <tr>
+                    <td class="title">% Load</td>
+                    <td></td>
+                    <td class="story story-color"><div id="sprint2_stories_pct_load">0%</div></td>
+                    <td class="test test-color"><div id="sprint2_tests_pct_load">0%</div></td>
+                    <td class="debt debt-color"><div id="sprint2_debts_pct_load">0%</div></td>
+                    <td class="bug bug-color"><div id="sprint2_bugs_pct_load">0%</div></td>
+                    <td class="support support-color"><div id="sprint2_supports_pct_load">0%</div></td>
+                    <td class="pip pip-color"><div id="sprint2_pipplus_pct_load">0%</div></td>
+                </tr>
+            </table>
+        </div>
+        <div class="flex-grid margin-left-10">
+            <div class="inline margin-top-2"><label class="pre-capa-label" for="sprint3capa">Capacity of Sprint 3: DEV </label><input type="text" id="sprint3capa" value="0"><label class="post-capa-label" for="sprint3capa"> Pts.</label>
+                <label class="pre-tst-capa-label" for="sprint3tstcapa">TST </label><input type="text" id="sprint3tstcapa" value="0"><label class="post-tst-capa-label" for="sprint3tstcapa"> Pts.</label>
+            </div>
+            <table class="sprint-table">
+                <tr>
+                    <th class="title"></th>
+                    <th class="sum">SUM</th>
+                    <th class="story story-color">SRY</th>
+                    <th class="test test-color">TST</th>
+                    <th class="debt debt-color">DEB</th>
+                    <th class="bug bug-color">BUG</th>
+                    <th class="support support-color">SUP</th>
+                    <th class="pip pip-color">PIP+</th>
+                </tr>
+                <tr>
+                    <td class="title">Capa</td>
+                    <td class="sum"><div id="sprint3_sum_cap">0</div></td>
+                    <td class="story story-color"><div id="sprint3_stories_cap">0</div></td>
+                    <td class="test test-color"><div id="sprint3_tests_cap">0</div></td>
+                    <td class="debt debt-color"><div id="sprint3_debts_cap">0</div></td>
+                    <td class="bug bug-color"><div id="sprint3_bugs_cap">0</div></td>
+                    <td class="support support-color"><div id="sprint3_supports_cap">0</div></td>
+                    <td class="pip pip-color"><div id="sprint3_pipplus_cap">0</div></td>
+                </tr>
+                <tr>
+                    <td class="title">Load</td>
+                    <td class="sum"><div id="sprint3_sum_load">0</div></td>
+                    <td class="story story-color"><div id="sprint3_stories_load">0</div></td>
+                    <td class="test test-color"><div id="sprint3_tests_load">0</div></td>
+                    <td class="debt debt-color"><div id="sprint3_debts_load">0</div></td>
+                    <td class="bug bug-color"><div id="sprint3_bugs_load">0</div></td>
+                    <td class="support support-color"><div id="sprint3_supports_load">0</div></td>
+                    <td class="pip pip-color"><div id="sprint3_pipplus_load">0</div></td>
+                </tr>
+                <tr class="avail">
+                    <td class="title">Avail</td>
+                    <td class="sum"><div id="sprint3_sum_avail">0</div></td>
+                    <td class="story story-color"><div id="sprint3_stories_avail">0</div></td>
+                    <td class="test test-color"><div id="sprint3_tests_avail">0</div></td>
+                    <td class="debt debt-color"><div id="sprint3_debts_avail">0</div></td>
+                    <td class="bug bug-color"><div id="sprint3_bugs_avail">0</div></td>
+                    <td class="support support-color"><div id="sprint3_supports_avail">0</div></td>
+                    <td class="pip pip-color"><div id="sprint3_pipplus_avail">0</div></td>
+                </tr>
+                <tr>
+                    <td class="spacing"></td>
+                </tr>
+                <tr class="pct">
+                    <td class="title">% Slot</td>
+                    <td></td>
+                    <td class="story story-color"><div id="sprint3_stories_pct_slot">0%</div></td>
+                    <td class="test test-color"><div id="sprint3_tests_pct_slot">0%</div></td>
+                    <td class="debt debt-color"><div id="sprint3_debts_pct_slot">0%</div></td>
+                    <td class="bug bug-color"><div id="sprint3_bugs_pct_slot">0%</div></td>
+                    <td class="support support-color"><div id="sprint3_supports_pct_slot">0%</div></td>
+                    <td class="pip pip-color"><div id="sprint3_pipplus_pct_slot">100%</div></td>
+                </tr>
+                <tr>
+                    <td class="title">% Load</td>
+                    <td></td>
+                    <td class="story story-color"><div id="sprint3_stories_pct_load">0%</div></td>
+                    <td class="test test-color"><div id="sprint3_tests_pct_load">0%</div></td>
+                    <td class="debt debt-color"><div id="sprint3_debts_pct_load">0%</div></td>
+                    <td class="bug bug-color"><div id="sprint3_bugs_pct_load">0%</div></td>
+                    <td class="support support-color"><div id="sprint3_supports_pct_load">0%</div></td>
+                    <td class="pip pip-color"><div id="sprint3_pipplus_pct_load">0%</div></td>
+                </tr>
+            </table>
+        </div>
+        <div class="flex-grid margin-left-10" id="sprint4_table">
+            <div class="inline margin-top-2"><label class="pre-capa-label" for="sprint4capa">Capacity of Sprint 4: DEV </label><input type="text" id="sprint4capa" value="0"><label class="post-capa-label" for="sprint4capa"> Pts.</label>
+                <label class="pre-tst-capa-label" for="sprint4tstcapa">TST </label><input type="text" id="sprint4tstcapa" value="0"><label class="post-tst-capa-label" for="sprint4tstcapa"> Pts.</label>
+            </div>
+            <table class="sprint-table">
+                <tr>
+                    <th class="title"></th>
+                    <th class="sum">SUM</th>
+                    <th class="story story-color">SRY</th>
+                    <th class="test test-color">TST</th>
+                    <th class="debt debt-color">DEB</th>
+                    <th class="bug bug-color">BUG</th>
+                    <th class="support support-color">SUP</th>
+                    <th class="pip pip-color">PIP+</th>
+                </tr>
+                <tr>
+                    <td class="title">Capa</td>
+                    <td class="sum"><div id="sprint4_sum_cap">0</div></td>
+                    <td class="story story-color"><div id="sprint4_stories_cap">0</div></td>
+                    <td class="test test-color"><div id="sprint4_tests_cap">0</div></td>
+                    <td class="debt debt-color"><div id="sprint4_debts_cap">0</div></td>
+                    <td class="bug bug-color"><div id="sprint4_bugs_cap">0</div></td>
+                    <td class="support support-color"><div id="sprint4_supports_cap">0</div></td>
+                    <td class="pip pip-color"><div id="sprint4_pipplus_cap">0</div></td>
+                </tr>
+                <tr>
+                    <td class="title">Load</td>
+                    <td class="sum"><div id="sprint4_sum_load">0</div></td>
+                    <td class="story story-color"><div id="sprint4_stories_load">0</div></td>
+                    <td class="test test-color"><div id="sprint4_tests_load">0</div></td>
+                    <td class="debt debt-color"><div id="sprint4_debts_load">0</div></td>
+                    <td class="bug bug-color"><div id="sprint4_bugs_load">0</div></td>
+                    <td class="support support-color"><div id="sprint4_supports_load">0</div></td>
+                    <td class="pip pip-color"><div id="sprint4_pipplus_load">0</div></td>
+                </tr>
+                <tr class="avail">
+                    <td class="title">Avail</td>
+                    <td class="sum"><div id="sprint4_sum_avail">0</div></td>
+                    <td class="story story-color"><div id="sprint4_stories_avail">0</div></td>
+                    <td class="test test-color"><div id="sprint4_tests_avail">0</div></td>
+                    <td class="debt debt-color"><div id="sprint4_debts_avail">0</div></td>
+                    <td class="bug bug-color"><div id="sprint4_bugs_avail">0</div></td>
+                    <td class="support support-color"><div id="sprint4_supports_avail">0</div></td>
+                    <td class="pip pip-color"><div id="sprint4_pipplus_avail">0</div></td>
+                </tr>
+                <tr>
+                    <td class="spacing"></td>
+                </tr>
+                <tr class="pct">
+                    <td class="title">% Slot</td>
+                    <td></td>
+                    <td class="story story-color"><div id="sprint4_stories_pct_slot">0%</div></td>
+                    <td class="test test-color"><div id="sprint4_tests_pct_slot">0%</div></td>
+                    <td class="debt debt-color"><div id="sprint4_debts_pct_slot">0%</div></td>
+                    <td class="bug bug-color"><div id="sprint4_bugs_pct_slot">0%</div></td>
+                    <td class="support support-color"><div id="sprint4_supports_pct_slot">0%</div></td>
+                    <td class="pip pip-color"><div id="sprint4_pipplus_pct_slot">100%</div></td>
+                </tr>
+                <tr>
+                    <td class="title">% Load</td>
+                    <td></td>
+                    <td class="story story-color"><div id="sprint4_stories_pct_load">0%</div></td>
+                    <td class="test test-color"><div id="sprint4_tests_pct_load">0%</div></td>
+                    <td class="debt debt-color"><div id="sprint4_debts_pct_load">0%</div></td>
+                    <td class="bug bug-color"><div id="sprint4_bugs_pct_load">0%</div></td>
+                    <td class="support support-color"><div id="sprint4_supports_pct_load">0%</div></td>
+                    <td class="pip pip-color"><div id="sprint4_pipplus_pct_load">0%</div></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container-sprint-overview margin-bottom-10">
+    <div class="flex-grid">
+        <div class="center label-bolder">Backlog</div>
+    </div>
+    <div class="flex-grid margin-left-10">
+        <span id="sprint1_cap_ova" class="sprint1_cap_ova left">Cap: </span>
+        <span id="sprint1_plan_ova" class="sprint1_plan_ova right">Plan: 0</span>
+        <div class="center label-bolder">Sprint 1</div>
+    </div>
+    <div class="flex-grid margin-left-10">
+        <span id="sprint2_cap_ova" class="sprint2_cap_ova left">Cap: </span>
+        <span id="sprint2_plan_ova" class="sprint2_plan_ova right">Plan: 0</span>
+        <div class="center label-bolder">Sprint 2</div>
+    </div>
+    <div class="flex-grid margin-left-10">
+        <span id="sprint3_cap_ova" class="sprint3_cap_ova left">Cap: </span>
+        <span id="sprint3_plan_ova" class="sprint3_plan_ova right">Plan: 0</span>
+        <div class="center label-bolder">Sprint 3</div>
+    </div>
+    <div class="flex-grid margin-left-10" id="sprint4_overview">
+        <span id="sprint4_cap_ova" class="sprint4_cap_ova left">Cap: </span>
+        <span id="sprint4_plan_ova" class="sprint4_plan_ova right">Plan: 0</span>
+        <div class="center label-bolder">Sprint 4</div>
+    </div>
+</div>
+
+<div class="container-general">
+    <div id="backlog" class="flex-grid sprint-box">
+        <div id="backlog_stories" class="sprint-stories story-color">
+            <div class="center label-bolder sprint_cap_w">Stories</div>
+        </div>
+        <div id="backlog_tests" class="sprint-tests test-color">
+            <div class="center label-bolder sprint_cap_w">Test Items</div>
+        </div>
+        <div id="backlog_debts" class="sprint-debts debt-color">
+            <div class="center label-bolder sprint_cap_w">Tech Debt</div>
+        </div>
+        <div id="backlog_bugs" class="sprint-bugs bug-color">
+            <div class="center label-bolder sprint_cap_w">Problem Reports</div>
+        </div>
+        <div id="backlog_supports" class="sprint-supports support-color">
+            <div class="center label-bolder">Support</div>
+        </div>
+        <!--<div id="backlog_pipplus" class="sprint-pip-plus pip-color">
+            <div class="center label-bolder sprint_cap_r">Added after PIP</div>
+        </div>-->
+    </div>
+    <div id="sprint1_full" class="flex-grid sprint-full margin-left-10 view">
+        <!--<div class="center label-bolder sprint_cap_w">Sprint 1</div>-->
+    </div>
+    <div id="sprint1" class="flex-grid sprint-box margin-left-10 view active">
+        <div id="sprint1_stories" class="sprint-stories story-color">
+            <span id="sprint1_stories_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint1_stories_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Stories</div>
+        </div>
+        <div id="sprint1_tests" class="sprint-tests test-color">
+            <span id="sprint1_tests_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint1_tests_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Test Items</div>
+        </div>
+        <div id="sprint1_debts" class="sprint-debts debt-color">
+            <span id="sprint1_debts_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint1_debts_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Tech Debt</div>
+        </div>
+        <div id="sprint1_bugs" class="sprint-bugs bug-color">
+            <span id="sprint1_bugs_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint1_bugs_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Problem Reports</div>
+        </div>
+        <div id="sprint1_supports" class="sprint-supports support-color">
+            <span id="sprint1_supports_cap_inline" class="sprint_cap left">Cap: </span>
+            <span id="sprint1_supports_load_inline" class="sprint_plan right">Plan: 0</span>
+            <div class="center label-bolder">Support</div>
+        </div>
+        <!--<div id="sprint1_pipplus" class="sprint-pip-plus pip-color">
+            <span id="sprint1_pipplus_cap_inline" class="sprint_cap_r left">Cap: </span>
+            <span id="sprint1_pipplus_load_inline" class="sprint_plan_r right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_r">Added after PIP</div>
+        </div>-->
+    </div>
+    <div id="sprint2_full" class="flex-grid sprint-full margin-left-10 view">
+        <!--<div class="center label-bolder sprint_cap_w">Sprint 2</div>-->
+    </div>
+    <div id="sprint2" class="flex-grid sprint-box margin-left-10 view active">
+        <div id="sprint2_stories" class="sprint-stories story-color">
+            <span id="sprint2_stories_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint2_stories_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Stories</div>
+        </div>
+        <div id="sprint2_tests" class="sprint-tests test-color">
+            <span id="sprint2_tests_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint2_tests_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Test Items</div>
+        </div>
+        <div id="sprint2_debts" class="sprint-debts debt-color">
+            <span id="sprint2_debts_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint2_debts_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Tech Debt</div>
+        </div>
+        <div id="sprint2_bugs" class="sprint-bugs bug-color">
+            <span id="sprint2_bugs_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint2_bugs_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Problem Reports</div>
+        </div>
+        <div id="sprint2_supports" class="sprint-supports support-color">
+            <span id="sprint2_supports_cap_inline" class="sprint_cap left">Cap: </span>
+            <span id="sprint2_supports_load_inline" class="sprint_plan right">Plan: 0</span>
+            <div class="center label-bolder">Support</div>
+        </div>
+        <!--<div id="sprint2_pipplus" class="sprint-pip-plus pip-color">
+            <span id="sprint2_pipplus_cap_inline" class="sprint_cap_r left">Cap: </span>
+            <span id="sprint2_pipplus_load_inline" class="sprint_plan_r right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_r">Added after PIP</div>
+        </div>-->
+    </div>
+    <div id="sprint3_full" class="flex-grid sprint-full margin-left-10 view">
+        <!--<div class="center label-bolder sprint_cap_w">Sprint 3</div>-->
+    </div>
+    <div id="sprint3" class="flex-grid sprint-box margin-left-10 view active">
+        <div id="sprint3_stories" class="sprint-stories story-color">
+            <span id="sprint3_stories_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint3_stories_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Stories</div>
+        </div>
+        <div id="sprint3_tests" class="sprint-tests test-color">
+            <span id="sprint3_tests_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint3_tests_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Test Items</div>
+        </div>
+        <div id="sprint3_debts" class="sprint-debts debt-color">
+            <span id="sprint3_debts_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint3_debts_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Tech Debt</div>
+        </div>
+        <div id="sprint3_bugs" class="sprint-bugs bug-color">
+            <span id="sprint3_bugs_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint3_bugs_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Problem Reports</div>
+        </div>
+        <div id="sprint3_supports" class="sprint-supports support-color">
+            <span id="sprint3_supports_cap_inline" class="sprint_cap left">Cap: </span>
+            <span id="sprint3_supports_load_inline" class="sprint_plan right">Plan: 0</span>
+            <div class="center label-bolder">Support</div>
+        </div>
+        <!--<div id="sprint3_pipplus" class="sprint-pip-plus pip-color">
+            <span id="sprint3_pipplus_cap_inline" class="sprint_cap_r left">Cap: </span>
+            <span id="sprint3_pipplus_load_inline" class="sprint_plan_r right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_r">Added after PIP</div>
+        </div>-->
+    </div>
+    <div id="sprint4_full" class="flex-grid sprint-full margin-left-10 view">
+        <!--<div class="center label-bolder sprint_cap_w">Sprint 4</div>-->
+    </div>
+    <div id="sprint4" class="flex-grid sprint-box margin-left-10 view active">
+        <div id="sprint4_stories" class="sprint-stories story-color">
+            <span id="sprint4_stories_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint4_stories_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Stories</div>
+        </div>
+        <div id="sprint4_tests" class="sprint-tests test-color">
+            <span id="sprint4_tests_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint4_tests_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Test Items</div>
+        </div>
+        <div id="sprint4_debts" class="sprint-debts debt-color">
+            <span id="sprint4_debts_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint4_debts_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Tech Debt</div>
+        </div>
+        <div id="sprint4_bugs" class="sprint-bugs bug-color">
+            <span id="sprint4_bugs_cap_inline" class="sprint_cap_w left">Cap: </span>
+            <span id="sprint4_bugs_load_inline" class="sprint_plan_w right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_w">Problem Reports</div>
+        </div>
+        <div id="sprint4_supports" class="sprint-supports support-color">
+            <span id="sprint4_supports_cap_inline" class="sprint_cap left">Cap: </span>
+            <span id="sprint4_supports_load_inline" class="sprint_plan right">Plan: 0</span>
+            <div class="center label-bolder">Support</div>
+        </div>
+        <!--<div id="sprint4_pipplus" class="sprint-pip-plus pip-color">
+            <span id="sprint4_pipplus_cap_inline" class="sprint_cap_r left">Cap: </span>
+            <span id="sprint4_pipplus_load_inline" class="sprint_plan_r right">Plan: 0</span>
+            <div class="center label-bolder sprint_cap_r">Added after PIP</div>
+        </div>-->
+    </div>
+</div>
+
+<script>
+    const params = new URLSearchParams(document.location.search);
+    const sprintnames = ["sprint1", "sprint2", "sprint3", "sprint4"];
+    const team = params.get("team");
+    const year = params.get("year");
+    const pi = params.get("pi");
+    $('#header').html("<h2>[" + team +"] PI-Planning Helper</h2>");
+
+    let dragged;
+    let plan = {
+        "pi": 0,
+        "pi_stories": 0,
+        "pi_tests": 0,
+        "pi_debts": 0,
+        "pi_bugs": 0,
+        "pi_supports": 0,
+        "pi_pipplus": 0,
+        "sprint1": 0,
+        "sprint2": 0,
+        "sprint3": 0,
+        "sprint4": 0,
+        "sprint1_stories": 0,
+        "sprint2_stories": 0,
+        "sprint3_stories": 0,
+        "sprint4_stories": 0,
+        "sprint1_tests": 0,
+        "sprint2_tests": 0,
+        "sprint3_tests": 0,
+        "sprint4_tests": 0,
+        "sprint1_debts": 0,
+        "sprint2_debts": 0,
+        "sprint3_debts": 0,
+        "sprint4_debts": 0,
+        "sprint1_bugs": 0,
+        "sprint2_bugs": 0,
+        "sprint3_bugs": 0,
+        "sprint4_bugs": 0,
+        "sprint1_supports": 0,
+        "sprint2_supports": 0,
+        "sprint3_supports": 0,
+        "sprint4_supports": 0,
+        "sprint1_pipplus": 0,
+        "sprint2_pipplus": 0,
+        "sprint3_pipplus": 0,
+        "sprint4_pipplus": 0
+    };
+    let cap = {
+        "pi": 0,
+        "pi_stories": 0,
+        "pi_bugs": 0,
+        "pi_debts": 0,
+        "pi_supports": 0,
+        "pi_pipplus": 0,
+        "sprint1": 0,
+        "sprint2": 0,
+        "sprint3": 0,
+        "sprint4": 0,
+        "sprint1_stories": 0,
+        "sprint2_stories": 0,
+        "sprint3_stories": 0,
+        "sprint4_stories": 0,
+        "sprint1_tests": 0,
+        "sprint2_tests": 0,
+        "sprint3_tests": 0,
+        "sprint4_tests": 0,
+        "sprint1_debts": 0,
+        "sprint2_debts": 0,
+        "sprint3_debts": 0,
+        "sprint4_debts": 0,
+        "sprint1_bugs": 0,
+        "sprint2_bugs": 0,
+        "sprint3_bugs": 0,
+        "sprint4_bugs": 0,
+        "sprint1_supports": 0,
+        "sprint2_supports": 0,
+        "sprint3_supports": 0,
+        "sprint4_supports": 0,
+        "sprint1_pipplus": 0,
+        "sprint2_pipplus": 0,
+        "sprint3_pipplus": 0,
+        "sprint4_pipplus": 0
+    };
+
+    /*const toggleBtn = document.getElementById("toggle-btn");
+
+    toggleBtn.addEventListener("click", () => {
+        sprintnames.forEach(function (sprint) {
+            document.getElementById(sprint + "_full").classList.toggle("active");
+            document.getElementById(sprint).classList.toggle("active");
+        });
+    });*/
+
+    document.addEventListener("dragstart", (event) => {
+        dragged = event.target;
+        event.target.classList.add("dragging");
+    }, false);
+
+    document.addEventListener("dragend", (event) => {
+        event.target.classList.remove("dragging");
+    }, false);
+
+    document.addEventListener("dragover", (event) => {
+        event.preventDefault();
+    }, false);
+
+    document.addEventListener("dragenter", (event) => {
+        if ( (event.target.parentNode.classList.contains("sprint-box") || event.target.classList.contains("sprint-full")) &&
+                (!event.target.classList.contains("box") && !event.target.classList.contains("epic-box")) ) {
+            event.target.classList.add('over');
+        } else if (event.target.classList.contains("epic-box") && !event.target.classList.contains("dragging")) {
+            event.target.parentNode.classList.add('overbox');
+        } else if ( event.target.classList.contains("sprint-box") || event.target.classList.contains("sprint-full")) {
+            event.target.classList.add('over');
+        }
+    }, false);
+
+    document.addEventListener("dragleave", (event) => {
+        if ( (event.target.parentNode.classList.contains("sprint-box") || event.target.classList.contains("sprint-full")) &&
+                (!event.target.classList.contains("box") && !event.target.classList.contains("epic-box")) ) {
+            event.target.classList.remove('over');
+        } else if (event.target.classList.contains("epic-box") && !event.target.classList.contains("dragging")) {
+            event.target.parentNode.classList.remove('overbox');
+        } else if ( event.target.classList.contains("sprint-box") || event.target.classList.contains("sprint-full") ) {
+            event.target.classList.remove('over');
+        }
+    }, false);
+
+    document.addEventListener("drop", (event) => {
+        //event.stopPropagation(); // stops the browser from redirecting.
+        event.preventDefault();
+
+        if ( (event.target.parentNode.classList.contains("sprint-box") || event.target.classList.contains("sprint-full")) &&
+                !event.target.classList.contains("box") ) {
+            calculateOverview(event.target);
+        } else if ( event.target.classList.contains("box") && !event.target.classList.contains("dragging")) {
+            calculateOverview(event.target.parentNode);
+        } else if ( event.target.classList.contains("sprint-box") || event.target.classList.contains("sprint-full")) {
+            let node;
+
+            if (dragged.id != "epic") {
+                node = document.getElementById(event.target.id + "_stories");
+            } else {
+                node = document.getElementById(event.target.id + "_" + dragged.id.substring(0, dragged.id.indexOf("_")) + "s");
+            }
+
+            calculateOverview(node);
+        }
+    });
+
+    function calculateOverview(target) {
+        target.classList.remove('over');
+        target.parentNode.classList.remove('over');
+        target.classList.remove('overbox');
+
+        if (dragged.parentNode.parentNode.id !== "Backlog") {
+            plan[dragged.parentNode.id] -= Number(dragged.querySelector(".points").innerHTML.valueOf());
+            plan[dragged.parentNode.parentNode.id] -= Number(dragged.querySelector(".points").innerHTML.valueOf());
+
+            const type = dragged.parentNode.id.split("_");
+            plan["pi_" + type[1]] -= Number(dragged.querySelector(".points").innerHTML.valueOf());
+            plan["pi"] -= Number(dragged.querySelector(".points").innerHTML.valueOf());
+        }
+
+        updateLoadAndAvail(dragged.parentNode.id, dragged.parentNode.parentNode.id);
+        updateLoadPCTFields(dragged.parentNode.id);
+
+        dragged.parentNode.removeChild(dragged);
+
+        let issuekey = dragged.querySelector(".link").innerHTML.valueOf();
+
+        if (target.parentNode.id == "backlog" || target.parentNode.parentNode.id == "backlog") {
+            if (dragged.id.includes("epic")) {
+                document.getElementById(dragged.id.substring(0, dragged.id.indexOf("_"))).appendChild(dragged);
+            } else {
+                targetdiv = target.id.substring(0, target.id.indexOf("_")) + "_" + dragged.id.substring(0, dragged.id.indexOf("_")) + "s"
+                document.getElementById(targetdiv).appendChild(dragged);
+            }
+
+            let data = {"key": issuekey};
+            $.ajax({
+                url: '/api/moveissuetobacklog',
+                type: 'post',
+                data: data,
+                success: function (data) {
+                    $.LoadingOverlay("hide");
+                }
+            });
+        } else {
+            if (dragged.id.includes("epic")) {
+                document.getElementById(target.id.substring(0, target.id.indexOf("_")) + "_stories").appendChild(dragged);
+                let clonedElement = dragged.cloneNode(true);
+                clonedElement.id = dragged.id + "_full";
+                document.getElementById(target.id.substring(0, target.id.indexOf("_")) + "_full").appendChild(clonedElement);
+            } else {
+                targetdiv = target.id.substring(0, target.id.indexOf("_")) + "_" + dragged.id.substring(0, dragged.id.indexOf("_")) + "s"
+                document.getElementById(targetdiv).appendChild(dragged);
+            }
+
+            let sprint = "R10-" + team + "-" + year + "-PI" + pi + "-" + target.parentNode.id.slice(-1);
+            if (target.id.includes("_full")) {
+                sprint = "R10-" + team + "-" + year + "-PI" + pi + "-" + target.id.substring(0, target.id.indexOf("_")).slice(-1);
+            }
+            alert("sprint: " + sprint);
+            let data = {"key": issuekey, "sprint": sprint};
+
+
+            $.ajax({
+                url: '/api/moveissuetosprint',
+                type: 'post',
+                data: data,
+                success: function (data) {
+                    $.LoadingOverlay("hide");
+                }
+            });
+        }
+
+        plan[target.id] += Number(dragged.querySelector(".points").innerHTML.valueOf());
+        plan[target.parentNode.id] += Number(dragged.querySelector(".points").innerHTML.valueOf());
+        const type = target.parentNode.id.split("_");
+        plan["pi_" + type[1]] += Number(dragged.querySelector(".points").innerHTML.valueOf());
+        plan["pi"] += Number(dragged.querySelector(".points").innerHTML.valueOf());
+
+        updateLoadAndAvail(target.id, target.parentNode.id);
+        updateLoadPCTFields(target.parentNode.id);
+    }
+
+    function truncateString(str, num) {
+        if (str.length > num) {
+            return str.slice(0, num) + "[...]";
+        } else {
+            return str;
+        }
+    }
+
+    function updateLoadAndAvail(target, targetparent) {
+        /* update per sprint data */
+        $("#" + target + "_load_inline").html("<span id='" + target + "_load_inline' className='sprint_plan right'>Plan: " + Number(plan[target]).toFixed(2) + "</span>");
+        $("#" + targetparent + "_plan_ova").html("<span id='" + targetparent + "_plan_ova' className='sprint_plan right'>Plan: " + (Number(plan[targetparent]) + Number(plan[targetparent + "_pipplus"])).toFixed(2) + "</span>");
+        $("#" + target + "_load").html("<span id='" + target + "_load' className='sprint_plan right'>" + Number(plan[target]).toFixed(2) + "</span>");
+        $("#" + targetparent + "_sum_load").html("<span id='" + targetparent + "_sum_load' className='overview right'>" + (Number(plan[targetparent]) + Number(plan[targetparent + "_tests"]) + Number(plan[targetparent + "_pipplus"])).toFixed(2) + "</span>");
+        $("#" + target + "_avail").html("<span id='" + target + "_avail' className='sprint_plan right'>" + (Number(cap[target]) - Number(plan[target])).toFixed(2) + "</span>");
+        $("#" + targetparent + "_sum_avail").html("<span id='" + targetparent + "_sum_avail' className='overview right'>" + (Number(cap[targetparent]) + Number(cap[targetparent + "_tests"]) - Number(plan[targetparent]) - Number(plan[targetparent + "_tests"]) - Number(plan[targetparent + "_pipplus"])).toFixed(2) + "</span>");
+        /* Percentage */
+        if (cap[target] > 0) {
+            $("#" + target + "_pct_slot").html("<span id='" + target + "_pct_slot' className='sprint_plan right'>" + Math.round((plan[target] / cap[target]) * 100) + "%</span>");
+        }
+
+        /* update PI data */
+        const type = target.split("_");
+        $("#pi_" + type[1] + "_load").html("<span id='pi_" + type[1] + "_load' className='sprint_plan right'>" + Number(plan["pi_" + type[1]]).toFixed(2) + "</span>");
+        $("#pi_sum_load").html("<span id='pi_sum_load' className='overview right'>" + (Number(plan["pi"]) + Number(plan["pi_tests"]) + Number(plan["pi_pipplus"])).toFixed(2) + "</span>");
+        $("#pi_" + type[1] + "_avail").html("<span id='pi_" + type[1] + "_avail' className='sprint_plan right'>" + (Number(cap ["pi_" + type[1]]) - Number(plan["pi_" + type[1]])).toFixed(2) + "</span>");
+        $("#pi_sum_avail").html("<span id='pi_sum_avail' className='overview right'>" + (Number(cap["pi"]) + Number(cap["pi_tests"]) - Number(plan["pi"]) - Number(plan["pi_tests"]) - Number(plan["pi_pipplus"])).toFixed(2) + "</span>");
+        /* Percentage */
+        if (cap["pi_" + type[1]] > 0) {
+            $("#pi_" + type[1] + "_pct_slot").html("<span id='pi_" + type[1] + "_pct_slot' className='sprint_plan right'>" + Math.round((plan["pi_" + type[1]] / cap["pi_" + type[1]]) * 100) + "%</span>");
+        }
+    }
+
+    function updateLoadPCTFields(sprint) {
+        if (plan[sprint] > 0) {
+            const storiesPCT = Math.round((plan[sprint + "_stories"] / (Number(plan[sprint]) + Number(plan[sprint + "_pipplus"]))) * 100);
+            const bugsPCT = Math.round((plan[sprint + "_bugs"] / (Number(plan[sprint]) + Number(plan[sprint + "_pipplus"]))) * 100);
+            const debtsPCT = Math.round((plan[sprint + "_debts"] / (Number(plan[sprint]) + Number(plan[sprint + "_pipplus"]))) * 100);
+            const supportsPCT = Math.round((plan[sprint + "_supports"] / (Number(plan[sprint]) + Number(plan[sprint + "_pipplus"]))) * 100);
+            const pipplusPCT = Math.round((plan[sprint + "_pipplus"] / (Number(plan[sprint]) + Number(plan[sprint + "_pipplus"]))) * 100);
+
+            $("#" + sprint + "_stories_pct_load").html("<span id='" + sprint + "_stories_pct_load' className='sprint_plan right'>" + storiesPCT + "%</span>");
+            $("#" + sprint + "_bugs_pct_load").html("<span id='" + sprint + "_bugs_pct_load' className='sprint_plan right'>" + bugsPCT + "%</span>");
+            $("#" + sprint + "_debts_pct_load").html("<span id='" + sprint + "_debts_pct_load' className='sprint_plan right'>" + debtsPCT + "%</span>");
+            $("#" + sprint + "_supports_pct_load").html("<span id='" + sprint + "_supports_pct_load' className='sprint_plan right'>" + supportsPCT + "%</span>");
+            $("#" + sprint + "_pipplus_pct_load").html("<span id='" + sprint + "_pipplus_pct_load' className='sprint_plan right'>" + pipplusPCT + "%</span>");
+
+            const pistoriesPCT = Math.round((plan["pi_stories"] / (Number(plan["pi"]) + Number(plan["pi_pipplus"]))) * 100);
+            const pibugsPCT = Math.round((plan["pi_bugs"] / (Number(plan["pi"]) + Number(plan["pi_pipplus"]))) * 100);
+            const pidebtsPCT = Math.round((plan["pi_debts"] / (Number(plan["pi"]) + Number(plan["pi_pipplus"]))) * 100);
+            const pisupportsPCT = Math.round((plan["pi_supports"] / (Number(plan["pi"]) + Number(plan["pi_pipplus"]))) * 100);
+            const pipipplusPCT = Math.round((plan["pi_pipplus"] / (Number(plan["pi"]) + Number(plan["pi_pipplus"]))) * 100);
+
+            $("#pi_stories_pct_load").html("<span id='pi_stories_pct_load' className='sprint_plan right'>" + pistoriesPCT + "%</span>");
+            $("#pi_bugs_pct_load").html("<span id='pi_bugs_pct_load' className='sprint_plan right'>" + pibugsPCT + "%</span>");
+            $("#pi_debts_pct_load").html("<span id='pi_debts_pct_load' className='sprint_plan right'>" + pidebtsPCT + "%</span>");
+            $("#pi_supports_pct_load").html("<span id='pi_supports_pct_load' className='sprint_plan right'>" + pisupportsPCT + "%</span>");
+            $("#pi_pipplus_pct_load").html("<span id='pi_pipplus_pct_load' className='sprint_plan right'>" + pipipplusPCT + "%</span>");
+        }
+    }
+
+    function updateCapacityFields(sprint) {
+        let stories = sprint + "_stories";
+        let tests = sprint + "_tests";
+        let debts = sprint + "_debts";
+        let bugs = sprint + "_bugs";
+        let supports = sprint + "_supports";
+        let pipplus = sprint + "_pipplus";
+        let pi_stories = "pi_stories";
+        let pi_tests = "pi_tests";
+        let pi_debts = "pi_debts";
+        let pi_bugs = "pi_bugs";
+        let pi_supports = "pi_supports";
+        let pi_pipplus = "pi_pipplus";
+
+        cap[sprint] = $('#' + sprint + 'capa').val();
+        cap[pipplus] = $('#pipplus').val();
+        /* PIP-Plus Buffer is a placeholder, so set plan accordingly to capacity */
+        plan[pipplus] = $('#pipplus').val();
+        //cap[stories] = Math.round(((cap[sprint] - cap[pipplus]) * $('#stories').val() / 100) * 4, 2) / 4;
+        cap[debts] = Math.round(((cap[sprint] - cap[pipplus]) * $('#debts').val() / 100) * 4, 2) / 4;
+        cap[tests] = $('#' + sprint + 'tstcapa').val();
+        cap[bugs] = Math.round(((cap[sprint] - cap[pipplus]) * $('#problems').val() / 100) * 4, 2) / 4;
+        cap[supports] = Math.round(((cap[sprint] - cap[pipplus]) * $('#supports').val() / 100) * 4, 2) / 4;
+        cap[stories] = cap[sprint] - cap[bugs] - cap[debts] - cap[supports] - cap[pipplus];
+
+        /* PI Values */
+        cap["pi"] = Number(cap["sprint1"]) + Number(cap["sprint2"]) + Number(cap["sprint3"]) + Number(cap["sprint4"]);
+        cap[pi_stories] = Number(cap["sprint1_stories"]) + Number(cap["sprint2_stories"]) + Number(cap["sprint3_stories"]) + ($("#sprints").is(':checked') ? Number(cap["sprint4_stories"]) : 0);
+        cap[pi_bugs] = Number(cap["sprint1_bugs"]) + Number(cap["sprint2_bugs"]) + Number(cap["sprint3_bugs"]) + ($("#sprints").is(':checked') ? Number(cap["sprint4_bugs"]) : 0);
+        cap[pi_debts] = Number(cap["sprint1_debts"]) + Number(cap["sprint2_debts"]) + Number(cap["sprint3_debts"]) + ($("#sprints").is(':checked') ? Number(cap["sprint4_debts"]) :0);
+        cap[pi_tests] = Number(cap["sprint1_tests"]) + Number(cap["sprint2_tests"]) + Number(cap["sprint3_tests"]) + ($("#sprints").is(':checked') ? Number(cap["sprint4_tests"]) :0);
+        cap[pi_supports] = Number(cap["sprint1_supports"]) + Number(cap["sprint2_supports"]) + Number(cap["sprint3_supports"]) + ($("#sprints").is(':checked') ? Number(cap["sprint4_supports"]) : 0);
+        /* PIP-Plus Buffer is a placeholder, so set plan accordingly to capacity */
+        cap[pi_pipplus] = Number(cap["sprint1_pipplus"]) + Number(cap["sprint2_pipplus"]) + Number(cap["sprint3_pipplus"]) + ($("#sprints").is(':checked') ? Number(cap["sprint4_pipplus"]) : 0);
+        plan[pi_pipplus] = cap[pi_pipplus];
+
+        $('#' + sprint + '_sum_cap').text(Number(cap[sprint]) + Number(cap[tests]));
+        $('#' + sprint + '_cap_ova').text("Cap: " + (Number(cap[sprint]) + Number(cap[tests])));
+
+        $('#' + sprint + '_stories_cap').text(cap[stories]);
+        $('#' + sprint + '_tests_cap').text(cap[tests]);
+        $('#' + sprint + '_debts_cap').text(cap[debts]);
+        $('#' + sprint + '_bugs_cap').text(cap[bugs]);
+        $('#' + sprint + '_supports_cap').text(cap[supports]);
+        $('#' + sprint + '_pipplus_cap').text(cap[pipplus]);
+        $('#' + sprint + '_pipplus_load').text(plan[pipplus]);
+
+        $("#" + sprint + "_stories_cap_inline").html("<span id='" + sprint + "_stories_cap_inline' class='sprint_cap_w left'>Cap: " + cap[stories] + "</span>");
+        $("#" + sprint + "_tests_cap_inline").html("<span id='" + sprint + "_stories_cap_inline' class='sprint_cap_w left'>Cap: " + cap[tests] + "</span>");
+        $("#" + sprint + "_debts_cap_inline").html("<span id='" + sprint + "_stories_cap_inline' class='sprint_cap_w left'>Cap: " + cap[debts] + "</span>");
+        $("#" + sprint + "_bugs_cap_inline").html("<span id='" + sprint + "_stories_cap_inline' class='sprint_cap_w left'>Cap: " + cap[bugs] + "</span>");
+        $("#" + sprint + "_supports_cap_inline").html("<span id='" + sprint + "_stories_cap_inline' class='sprint_cap left'>Cap: " + cap[supports] + "</span>");
+        $("#" + sprint + "_pipplus_cap_inline").html("<span id='" + sprint + "_stories_cap_inline' class='sprint_cap_r left'>Cap: " + cap[pipplus] + "</span>");
+
+        $("#" + sprint + "_sum_avail").html("<span id='" + sprint + "_sum_avail' className='overview right'>" + (Number(cap[sprint]) + Number(cap[tests]) - Number(plan[sprint])).toFixed(2)  + "</span>");
+        $("#" + sprint + "_stories_avail").html("<span id='" + sprint + "_stories_avail' className='sprint_plan right'>" + (Number(cap[stories]) - Number(plan[stories])).toFixed(2) + "</span>");
+        $("#" + sprint + "_tests_avail").html("<span id='" + sprint + "_tests_avail' className='sprint_plan right'>" + (Number(cap[tests]) - Number(plan[tests])).toFixed(2) + "</span>");
+        $("#" + sprint + "_debts_avail").html("<span id='" + sprint + "_debts_avail' className='sprint_plan right'>" + (Number(cap[debts]) - Number(plan[debts])).toFixed(2) + "</span>");
+        $("#" + sprint + "_bugs_avail").html("<span id='" + sprint + "_bugs_avail' className='sprint_plan right'>" + (Number(cap[bugs]) - Number(plan[bugs])).toFixed(2) + "</span>");
+        $("#" + sprint + "_supports_avail").html("<span id='" + sprint + "_supports_avail' className='sprint_plan right'>" + (Number(cap[supports]) - Number(plan[supports])).toFixed(2) + "</span>");
+        $("#" + sprint + "_pipplus_avail").html("<span id='" + sprint + "_pipplus_avail' className='sprint_plan right'>" + (Number(cap[pipplus]) - Number(plan[pipplus])).toFixed(2) + "</span>");
+
+        /* PI Overall number */
+        $('#pi_sum_cap').text(cap["pi"] + cap[pi_tests]);
+        $('#picapa').val(cap["pi"]);
+        $('#pitstcapa').val(cap[pi_tests]);
+        $('#pi_stories_cap').text(cap[pi_stories]);
+        $('#pi_tests_cap').text(cap[pi_tests]);
+        $('#pi_debts_cap').text(cap[pi_debts]);
+        $('#pi_bugs_cap').text(cap[pi_bugs]);
+        $('#pi_supports_cap').text(cap[pi_supports]);
+        $('#pi_pipplus_cap').text(cap[pi_pipplus]);
+        $('#pi_pipplus_load').text(plan[pi_pipplus]);
+
+        $("#pi_sum_avail").html("<span id='pi_sum_avail' className='overview right'>" + (Number(cap["pi"]) + Number(cap[pi_tests]) - Number(plan["pi"])).toFixed(2)  + "</span>");
+        $("#pi_stories_avail").html("<span id='pi_stories_avail' className='sprint_plan right'>" + (Number(cap[pi_stories]) - Number(plan[pi_stories])).toFixed(2) + "</span>");
+        $("#pi_tests_avail").html("<span id='pi__tests_avail' className='sprint_plan right'>" + (Number(cap[pi_tests]) - Number(plan[pi_tests])).toFixed(2) + "</span>");
+        $("#pi_debts_avail").html("<span id='pi__debts_avail' className='sprint_plan right'>" + (Number(cap[pi_debts]) - Number(plan[pi_debts])).toFixed(2) + "</span>");
+        $("#pi_bugs_avail").html("<span id='pi__bugs_avail' className='sprint_plan right'>" + (Number(cap[pi_bugs]) - Number(plan[pi_bugs])).toFixed(2) + "</span>");
+        $("#pi_supports_avail").html("<span id='pi_supports_avail' className='sprint_plan right'>" + (Number(cap[pi_supports]) - Number(plan[pi_supports])).toFixed(2) + "</span>");
+        $("#pi_pipplus_avail").html("<span id='pi_pipplus_avail' className='sprint_plan right'>" + (Number(cap[pi_pipplus]) - Number(plan[pi_pipplus])).toFixed(2) + "</span>");
+    }
+
+    function checkCapacityValue(sprint) {
+        let capa = $('#' + sprint + 'capa').val();
+        $('#' + sprint + 'capa').val(capa.replace(",","."));
+    }
+
+    function uploadCapacitySettings() {
+        const data = {
+                "team": team,
+                "year": year,
+                "pi": "PI" + pi,
+                "stories": $('#stories').val(),
+                "problems": $('#problems').val(),
+                "debts": $('#debts').val(),
+                "supports": $('#supports').val(),
+                "pipplus": $('#pipplus').val(),
+                "foursprints": ($('#sprints').is(':checked') ? "true" : "false)"),
+                "sprints": {
+                    "sprint1": {
+                        "capacity": $('#sprint1capa').val(),
+                        "test": $('#sprint1tstcapa').val()
+                    },
+                    "sprint2": {
+                        "capacity": $('#sprint2capa').val(),
+                        "test": $('#sprint2tstcapa').val()
+                    },
+                    "sprint3": {
+                        "capacity": $('#sprint3capa').val(),
+                        "test": $('#sprint3tstcapa').val()
+                    },
+                    "sprint4": {
+                        "capacity": $('#sprint4capa').val(),
+                        "test": $('#sprint4tstcapa').val()
+                    }
+                }
+            }
+
+        $.ajax({
+            url: '/api/savecapacity',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (status) {
+                $.LoadingOverlay("hide");
+            }
+        });
+    }
+
+    function drawBox(element, boxclass, id, draggable, key, float, summary, color = "") {
+        document.getElementById(element).innerHTML +=
+        "<div class='box " + boxclass + "' id='" + id + "' draggable='" + draggable + "'>" +
+        "<a class='link' href='https://jira.frequentis.frq/browse/" + key +
+        "' target='_blank' rel='noopener noreferrer'>" + key + "</a>" +
+        "<span style='float:right'>" + float + "</span>" +
+        "<div id='" + id + "_summary' class='summary " + color + "'>" + summary + "</div></div>";
+
+        let elemSubstr = element.substring(0, element.indexOf("_"));
+        let idSubstr = id.substring(0, id.indexOf("_"));
+
+        if (sprintnames.includes(elemSubstr)) {
+            let clonedElement = document.getElementById(id).cloneNode(true);
+            clonedElement.id = id + "_full";
+            let clonedSummary = clonedElement.querySelector('.summary');
+            clonedSummary.classList.add(idSubstr + "-color");
+            document.getElementById(elemSubstr + "_full").appendChild(clonedElement);
+        }
+    }
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '/api/loadcapacity',
+            type: 'post',
+            data: {
+                team: team,
+                year: year,
+                pi: "PI" + pi
+            },
+            success: function (status) {
+                $.LoadingOverlay("hide");
+
+                $('#sprint1capa').val(status["sprints"]["sprint1"]["capacity"]);
+                $('#sprint1tstcapa').val(status["sprints"]["sprint1"]["test"]);
+                $('#sprint2capa').val(status["sprints"]["sprint2"]["capacity"]);
+                $('#sprint2tstcapa').val(status["sprints"]["sprint2"]["test"]);
+                $('#sprint3capa').val(status["sprints"]["sprint3"]["capacity"]);
+                $('#sprint3tstcapa').val(status["sprints"]["sprint3"]["test"]);
+                $('#sprint4capa').val(status["sprints"]["sprint4"]["capacity"]);
+                $('#sprint4tstcapa').val(status["sprints"]["sprint4"]["test"]);
+                $('#pipplus').val(status["pipplus"]);
+
+                if (status["foursprints"] === 'true')
+                {
+                    $('#sprints').prop('checked', true);
+                    $('#sprint4_table').show();
+                    $('#sprint4').show();
+                    $('#sprint4_overview').show();
+                } else {
+                    $('#sprints').prop('checked', false);
+                    $('#sprint4_table').hide();
+                    $('#sprint4').hide();
+                    $('#sprint4_overview').hide();
+                }
+
+                updateCapacityFields("sprint1");
+                updateCapacityFields("sprint2");
+                updateCapacityFields("sprint3");
+                updateCapacityFields("sprint4");
+            },
+            error: function () {
+                $.LoadingOverlay("hide");
+            }
+        });
+
+        $.ajax({
+            url: '/api/tickets',
+            type: 'get',
+            data: {
+                team: team,
+                year: year,
+                pi: "PI" + pi
+            },
+            success: function(data) {
+                $.LoadingOverlay("hide");
+
+                if (data != "NOK") {
+                    let items = JSON.parse(data);
+
+                    let features = items["data"]["features"];
+                    let epiccounter = 0;
+                    let storycounter = 0;
+                    let targetid = "";
+                    let targetid_stories = "";
+                    let pi_stories = "";
+                    let summary;
+
+                    for (let i = 0; i < features.length; i++) {
+                        let featureid = "feature" + i;
+                        let epics = features[i]["epics"];
+                        let boxid;
+
+                        drawBox("backlog_stories", "epic-box", featureid, "false", features[i]["key"], "SFeat", features[i]["summary"], "epic-color" + i);
+
+                        for (let j = 0; j < epics.length; j++) {
+                            let epicid = "epic" + epiccounter;
+                            let stories = epics[j]["stories"];
+
+                            drawBox(featureid, "epic-box", epicid, "false", epics[j]["key"], "EPIC", epics[j]["summary"], "epic-color" + i);
+
+                            for (let k = 0; k < stories.length; k++) {
+                                let points = Number(stories[k]["storypoints"] == null ? "0" : stories[k]["storypoints"]);
+
+                                if (stories[k]["sprint"] != "" && stories[k]["sprint"].includes("PI" + pi) && stories[k]["sprint"].includes(year)) {
+                                    targetid = "sprint" + stories[k]["sprint"].slice(-1);
+
+                                    if (stories[k]["labels"].includes("SYSTEM_TEST")) {
+                                        targetid_stories = targetid + "_tests";
+                                        pi_stories = "pi_tests";
+
+                                        plan[targetid_stories] += points;
+                                        //plan[targetid] += points;
+                                        plan[pi_stories] += points;
+                                        //plan["pi"] += points;
+                                        boxid = epicid + "_test_" + storycounter;
+                                    } else {
+                                        targetid_stories = targetid + "_stories";
+                                        pi_stories = "pi_stories";
+
+                                        plan[targetid_stories] += points;
+                                        plan[targetid] += points;
+                                        plan[pi_stories] += points;
+                                        plan["pi"] += points;
+                                        boxid = epicid + "_" + storycounter;
+                                    }
+
+                                    updateLoadAndAvail(targetid_stories, targetid);
+
+                                    drawBox(targetid_stories, "ticket-box", boxid, "true", stories[k]["key"],
+                                        "SP: <div id='points' class='points'>" + points + "</div>", stories[k]["summary"], "epic-color" + i);
+                                    /*drawBox(targetid + "_full", "ticket-box", boxid, "true", stories[k]["key"],
+                                        "SP: <div id='points' class='points'>" + points + "</div>", stories[k]["summary"], "epic-color" + i);*/
+                                } else {
+                                    drawBox(epicid, "ticket-box", epicid + "_" + storycounter, "true", stories[k]["key"],
+                                        "SP: <div id='points' class='points'>" + points + "</div>", stories[k]["summary"], "epic-color" + i);
+                                }
+                                storycounter++;
+                            }
+                            epiccounter++;
+                        }
+                    }
+
+                    let problems = items["data"]["problems"];
+
+                    for (let i = 0; i < problems.length; i++) {
+                        let points = Number(problems[i]["storypoints"] == null ? "0" : problems[i]["storypoints"]);
+
+                        if (problems[i]["summary"].length > 42) {
+                            const words = problems[i]["summary"].split(" ");
+                            summary = "";
+
+                            words.forEach((word) => {
+                                if (word.length > 30) {
+                                    summary += truncateString(word, 35) + " ";
+                                } else {
+                                    summary += word + " ";
+                                }
+                            });
+                        } else {
+                            summary = problems[i]["summary"];
+                        }
+
+                        if (problems[i]["sprint"] !== "" && problems[i]["sprint"].includes("PI" + pi) && problems[i]["sprint"].includes(year)) {
+                            targetid = "sprint" + problems[i]["sprint"].slice(-1);
+                            let targetid_bugs = targetid + "_bugs";
+
+                            plan[targetid_bugs] += points;
+                            plan[targetid] += points;
+                            plan["pi_bugs"] += points;
+                            plan["pi"] += points;
+
+                            updateLoadAndAvail(targetid_bugs, targetid);
+
+                            drawBox(targetid_bugs, "ticket-box", "bug_" + i, "true", problems[i]["key"],
+                                "SP: <div id='points' class='points'>" + points + "</div>", summary);
+                        } else {
+                            drawBox("backlog_bugs", "ticket-box", "bug_" + i, "true", problems[i]["key"],
+                                "SP: <div id='points' class='points'>" + points + "</div>", summary);
+                        }
+                    }
+
+                    let actionitems = items["data"]["actionitems"];
+
+                    for (let i = 0; i < actionitems.length; i++) {
+                        let points = Number(actionitems[i]["storypoints"] == null ? "0" : actionitems[i]["storypoints"]);
+
+                        if (actionitems[i]["summary"].length > 42) {
+                            const words = actionitems[i]["summary"].split(" ");
+                            summary = "";
+
+                            words.forEach((word) => {
+                                if (word.length > 30) {
+                                    summary += truncateString(word, 35) + " ";
+                                } else {
+                                    summary += word + " ";
+                                }
+                            });
+                        } else {
+                            summary = actionitems[i]["summary"];
+                        }
+
+                        if (actionitems[i]["sprint"] !== "" && actionitems[i]["sprint"].includes("PI" + pi) && actionitems[i]["sprint"].includes(year)) {
+                            targetid = "sprint" + actionitems[i]["sprint"].slice(-1);
+                            let targetid_debts = targetid + "_debts";
+
+                            plan[targetid_debts] += points;
+                            plan[targetid] += points;
+                            plan["pi_debts"] += points;
+                            plan["pi"] += points;
+
+                            updateLoadAndAvail(targetid_debts, targetid);
+
+                            drawBox(targetid_debts, "ticket-box", "debt_" + i, "true", actionitems[i]["key"],
+                                "SP: <div id='points' class='points'>" + points + "</div>", summary);
+                        } else {
+                            drawBox("backlog_debts", "ticket-box", "debt_" + i, "true", actionitems[i]["key"],
+                                "SP: <div id='points' class='points'>" + points + "</div>", summary);
+                        }
+                    }
+
+                    let supportitems = items["data"]["supportitems"];
+                    let boxid;
+
+                    for (let i = 0; i < supportitems.length; i++) {
+                        let points = Number(supportitems[i]["storypoints"] == null ? "0" : supportitems[i]["storypoints"]);
+                        let targetid_supports = "";
+                        let pi_supports = "";
+
+                        if (supportitems[i]["sprint"] !== "" && supportitems[i]["sprint"].includes("PI" + pi) && supportitems[i]["sprint"].includes(year)) {
+                            targetid = "sprint" + supportitems[i]["sprint"].slice(-1);
+
+                            if (supportitems[i]["labels"].includes("SYSTEM_TEST")) {
+                                targetid_supports = targetid + "_tests";
+                                pi_supports = "pi_tests";
+
+                                plan[targetid_supports] += points;
+                                plan[pi_supports] += points;
+                                boxid = "support_test_" + i;
+                            } else {
+                                targetid_supports = targetid + "_supports";
+                                pi_supports = "pi_supports";
+
+                                plan[targetid_supports] += points;
+                                plan[targetid] += points;
+                                plan[pi_supports] += points;
+                                plan["pi"] += points;
+                                boxid = "support_" + i;
+                            }
+
+                            updateLoadAndAvail(targetid_supports, targetid);
+
+                            drawBox(targetid_supports, "ticket-box", boxid, "true", supportitems[i]["key"],
+                                "SP: <div id='points' class='points'>" + points + "</div>", supportitems[i]["summary"],
+                                supportitems[i]["labels"].includes("SYSTEM_TEST") ? "support-color" : "" );
+                        } else {
+                            drawBox("backlog_supports", "ticket-box", "support_" + i, "true", supportitems[i]["key"],
+                                "SP: <div id='points' class='points'>" + points + "</div>", supportitems[i]["summary"]);
+                        }
+                    }
+
+                    updateLoadPCTFields("sprint1");
+                    updateLoadPCTFields("sprint2");
+                    updateLoadPCTFields("sprint3");
+                    updateLoadPCTFields("sprint4");
+                } else {
+                    alert("Error while loading data from JIRA.\n\nCheck:\n\n" +
+                        "   - Connection to JIRA\n   - VPN connection\n   - entered Credentials");
+                    document.getElementById('backbutton').click();
+                }
+            }
+        });
+    });
+
+    function getPlanForIssueType(sprint, type, id) {
+        let issues = [];
+        let childnodes = document.getElementById(sprint + "_" + type).childNodes;
+
+        childnodes.forEach((child) => {
+            if (typeof child.id === "undefined") {
+            } else if (child.id.includes(id))
+            {
+                let issue = {
+                    "key": child.querySelector(".link").innerHTML.valueOf(),
+                    "summary": child.querySelector(".summary").innerHTML.valueOf(),
+                    "points": child.querySelector(".points").innerHTML.valueOf()
+                };
+                issues.push(issue);
+            }
+        });
+
+        return issues;
+    }
+
+    function getPlanForSprint(sprint) {
+        let stories = getPlanForIssueType(sprint, "stories", "epic");
+        let tests = getPlanForIssueType(sprint, "tests", "_test_");
+        let bugs = getPlanForIssueType(sprint, "bugs", "bug_");
+        let debts = getPlanForIssueType(sprint, "debts", "debt_");
+        let supports = getPlanForIssueType(sprint, "supports", "support_");
+
+        let plan = {
+            "load": $('#' + sprint + '_sum_load').val(),
+            "stories": stories,
+            "tests": tests,
+            "problems": bugs,
+            "debts": debts,
+            "supports": supports
+        };
+
+        return plan;
+    }
+
+    function getPlan() {
+        let plan = {
+                "pi": "PI-" + year + "-0" + pi,
+                "team": team,
+                "sprints": {
+                    "sprint1": getPlanForSprint("sprint1"),
+                    "sprint2": getPlanForSprint("sprint2"),
+                    "sprint3": getPlanForSprint("sprint3"),
+                    "sprint4": getPlanForSprint("sprint4")
+                }
+            };
+
+        return plan;
+    }
+
+    $('#saveplanbutton').click(function () {
+        let plan = {
+            "data": JSON.stringify(getPlan())
+        }
+
+        $.ajax({
+            url: '/api/saveplan',
+            type: 'post',
+            data: plan,
+            success: function (data) {
+                $.LoadingOverlay("hide");
+            }
+        });
+    });
+
+    $('#sprint1capa').change(function() {
+        checkCapacityValue("sprint1");
+        uploadCapacitySettings();
+        updateCapacityFields("sprint1");
+    });
+
+    $('#sprint1tstcapa').change(function() {
+        checkCapacityValue("sprint1tst");
+        uploadCapacitySettings();
+        updateCapacityFields("sprint1");
+    });
+
+    $('#sprint2capa').change(function() {
+        checkCapacityValue("sprint2");
+        uploadCapacitySettings();
+        updateCapacityFields("sprint2");
+    });
+
+    $('#sprint2tstcapa').change(function() {
+        checkCapacityValue("sprint2tst");
+        uploadCapacitySettings();
+        updateCapacityFields("sprint2");
+    });
+
+    $('#sprint3capa').change(function() {
+        checkCapacityValue("sprint3");
+        uploadCapacitySettings();
+        updateCapacityFields("sprint3");
+    });
+
+    $('#sprint3tstcapa').change(function() {
+        checkCapacityValue("sprint3tst");
+        uploadCapacitySettings();
+        updateCapacityFields("sprint3");
+    });
+
+    $('#sprint4capa').change(function() {
+        checkCapacityValue("sprint4");
+        uploadCapacitySettings();
+        updateCapacityFields("sprint4");
+    });
+
+    $('#sprint4tstcapa').change(function() {
+        checkCapacityValue("sprint4tst");
+        uploadCapacitySettings();
+        updateCapacityFields("sprint4");
+    });
+
+    $('#pipplus').change(function () {
+        uploadCapacitySettings();
+        updateCapacityFields("sprint1");
+        updateCapacityFields("sprint2");
+        updateCapacityFields("sprint3");
+        updateCapacityFields("sprint4");
+    });
+
+    $('#sprints').change(function () {
+        if ($("#sprints").is(':checked'))
+        {
+            $('#sprint4_table').show();
+            $('#sprint4').show();
+            $('#sprint4_overview').show();
+        } else {
+            $('#sprint4_table').hide();
+            $('#sprint4').hide();
+            $('#sprint4_overview').hide();
+        }
+
+        uploadCapacitySettings();
+        updateCapacityFields("sprint1");
+    })
+
+    $(document).ajaxSend(function(event, jqxhr, settings) {
+        $.LoadingOverlay("show");
+    });
+</script>
+{% endblock %}
+
