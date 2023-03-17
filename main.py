@@ -163,7 +163,7 @@ def getTickets():
                             linkedstory = {
                                 "key": story['key'],
                                 "summary": story['fields']['summary'],
-                                "storypoints": story['fields']['customfield_10003'],
+                                "storypoints": round(story['fields']['customfield_10003'],2),
                                 "labels": story['fields']['labels'],
                                 "sprint": sprintname
                             }
