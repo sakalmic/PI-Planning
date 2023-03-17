@@ -888,7 +888,7 @@
         cap[tests] = $('#' + sprint + 'tstcapa').val();
         cap[bugs] = Math.round(((cap[sprint] - cap[pipplus]) * $('#problems').val() / 100) * 4, 2) / 4;
         cap[supports] = Math.round(((cap[sprint] - cap[pipplus]) * $('#supports').val() / 100) * 4, 2) / 4;
-        cap[stories] = cap[sprint] - cap[bugs] - cap[debts] - cap[supports] - cap[pipplus];
+        cap[stories] = cap[sprint] - cap[bugs] - cap[debts] - cap[supports] - cap[pipplus]).toFixed(2);
 
         /* PI Values */
         cap["pi"] = Number(cap["sprint1"]) + Number(cap["sprint2"]) + Number(cap["sprint3"]) + Number(cap["sprint4"]);
